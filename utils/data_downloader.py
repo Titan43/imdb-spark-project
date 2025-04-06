@@ -1,11 +1,13 @@
 import requests
 import os
+from typing import Optional
+from . import get_filename_from_url
 
 class Downloader:
     def __init__(self, cache_dir: str):
         self.cache_dir = cache_dir
     
-    def download_file(self, url: str):
+    def download_file(self, url: str) -> Optional[str]:
         """
         Downloads a .tsv.gz file from the URL and caches it locally.
         If the file is already cached, it does nothing.
@@ -13,7 +15,7 @@ class Downloader:
         :param url: URL pointing to the .tsv.gz file
         :return: The local cache path of the downloaded file
         """
-        filename = url.split('/')[-1].replace(".tsv.gz", "")
+        filename = get_filename_from_url(url)
         cache_path = os.path.join(self.cache_dir, f"{filename}.tsv.gz")
         
         if os.path.exists(cache_path):

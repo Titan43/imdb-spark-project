@@ -1,19 +1,15 @@
 from pyspark.sql import SparkSession
-from utils.data_loader import DataLoader 
-from utils.data_writer import DataWriter 
+from questions.df_preload import preload_dfs
+from questions import get_question_results
 
-spark = SparkSession.builder.appName("DataProcessingApp").getOrCreate()
+def main():
+    spark = SparkSession.builder.appName("DataProcessingApp").getOrCreate()
+    df_s = preload_dfs(spark, 
+                    ["https://datasets.imdbws.com/title.basics.tsv.gz",
+                        "https://datasets.imdbws.com/title.crew.tsv.gz",
+                        "https://datasets.imdbws.com/name.basics.tsv.gz"])
 
-CACHE_PATH = "/app/.cache"
+    get_question_results.run(df_s)
 
-data_loader = DataLoader(spark, CACHE_PATH)
-data_writer = DataWriter(CACHE_PATH)
-
-url = "https://datasets.imdbws.com/name.basics.tsv.gz"
-df = data_loader.load_data(url)
-
-if df is not None:
-    df.show()
-    data_writer.save_as_csv(df, "test")
-else:
-    print("Failed to load data.")
+if __name__ == "__main__":
+    main()
