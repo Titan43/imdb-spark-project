@@ -1,4 +1,5 @@
-from pyspark.sql import SparkSession
+from typing import Optional
+from pyspark.sql import SparkSession, DataFrame
 from .data_downloader import Downloader
 
 class DataLoader:
@@ -6,7 +7,7 @@ class DataLoader:
         self.spark_session = spark_session
         self.cache_dir = cache_dir
 
-    def load_data(self, url: str):
+    def load_data(self, url: str) -> Optional[DataFrame]:
         """
         Downloads the .tsv.gz file (if not cached) and loads it into a PySpark DataFrame.
 
