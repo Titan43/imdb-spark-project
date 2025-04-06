@@ -13,4 +13,6 @@ RUN pip --no-cache-dir install pandas requests
 
 COPY . .
 
+RUN mkdir -p /app/.cache
+
 CMD python main.py
