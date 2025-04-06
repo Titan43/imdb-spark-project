@@ -1,4 +1,5 @@
 import os
+from typing import Optional
 from pyspark.sql import DataFrame
 
 class DataWriter:
@@ -6,7 +7,7 @@ class DataWriter:
         self.cache_dir = cache_dir
         os.makedirs(self.cache_dir, exist_ok=True)
 
-    def save_as_csv(self, df: DataFrame, filename: str, mode: str = "overwrite"):
+    def save_as_csv(self, df: DataFrame, filename: str, mode: str = "overwrite") -> Optional[str]:
         """
         Saves the provided DataFrame as a CSV file in the cache directory.
 
