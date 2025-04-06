@@ -8,7 +8,8 @@ FROM openjdk:${OPENJDK_VERSION}-${IMAGE_VARIANT}
 COPY --from=py3 / /
 
 ARG PYSPARK_VERSION=3.2.0
-RUN pip --no-cache-dir install pyspark==${PYSPARK_VERSION}
+
+RUN pip --no-cache-dir install pyspark==${PYSPARK_VERSION} pandas
 
 COPY . .
 
