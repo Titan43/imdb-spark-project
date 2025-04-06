@@ -1,39 +1,24 @@
-import pandas as pd
-import requests
-import io
-import os
+from pyspark.sql import SparkSession
+from .data_downloader import Downloader
 
-CACHE_DIR = "/app/.cache"
+class DataLoader:
+    def __init__(self, spark_session: SparkSession, cache_dir: str):
+        self.spark_session = spark_session
+        self.cache_dir = cache_dir
 
-def load_tsv_gz_from_urls(url: str):
-    """
-    Loads .tsv.gz files from a URL into a pandas DataFrame.
-    If the file has been previously cached, it loads from the cache instead of downloading it again.
+    def load_data(self, url: str):
+        """
+        Downloads the .tsv.gz file (if not cached) and loads it into a PySpark DataFrame.
 
-    :param url: URL pointing to the .tsv.gz file
-    :return: pandas DataFrame
-    """
-    filename = url.split('/')[-1].replace(".tsv.gz", "")
-    cache_path = os.path.join(CACHE_DIR, f"{filename}.tsv.gz")
-    
-    if os.path.exists(cache_path):
-        print(f"Loading cached dataset: {filename}")
-        return pd.read_csv(cache_path, sep="\t", compression='gzip', low_memory=False)
-
-    print(f"Downloading {filename}...")
-    try:
-        response = requests.get(url)
-        response.raise_for_status()
+        :param url: URL pointing to the .tsv.gz file
+        :return: PySpark DataFrame
+        """
+        downloader = Downloader(self.cache_dir)
+        cache_path = downloader.download_file(url)
         
-        os.makedirs(CACHE_DIR, exist_ok=True)
-        with open(cache_path, 'wb') as f:
-            f.write(response.content)
-        
-        with io.BytesIO(response.content) as gz_data:
-            df = pd.read_csv(gz_data, sep="\t", compression='gzip', low_memory=False)
-            print(f"Loaded: {filename} with shape {df.shape}")
-        
-        return df
-    except Exception as e:
-        print(f"Error: failed to load file {filename} — {e}")
-        return None
+        if cache_path:
+            print(f"Loading data from {cache_path} into DataFrame...")
+            return self.spark_session.read.option("delimiter", "\t").csv(cache_path, header=True, inferSchema=True)
+        else:
+            print("Failed to load data.")
+            return None
