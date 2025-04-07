@@ -7,11 +7,12 @@ class DataLoader:
         self.spark_session = spark_session
         self.cache_dir = cache_dir
 
-    def load_data(self, url: str) -> Optional[DataFrame]:
+    def load_data(self, url: str, num_partitions: int = 100) -> Optional[DataFrame]:
         """
-        Downloads the .tsv.gz file (if not cached) and loads it into a PySpark DataFrame.
+        Downloads the .tsv.gz file (if not cached) and loads it into a repartitioned PySpark DataFrame.
 
         :param url: URL pointing to the .tsv.gz file
+        :param num_partitions: Number of partitions to repartition the DataFrame into
         :return: PySpark DataFrame
         """
         downloader = Downloader(self.cache_dir)
@@ -19,7 +20,11 @@ class DataLoader:
         
         if cache_path:
             print(f"Loading data from {cache_path} into DataFrame...")
-            return self.spark_session.read.option("delimiter", "\t").csv(cache_path, header=True, inferSchema=True)
+            df = self.spark_session.read.option("delimiter", "\t")\
+                                        .option("header", True)\
+                                        .option("inferSchema", True)\
+                                        .csv(cache_path)
+            return df.repartition(num_partitions)
         else:
             print("Failed to load data.")
             return None
