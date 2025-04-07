@@ -18,6 +18,16 @@ from .questions2 import (
     get_actors_with_most_series,
     get_top10_genres_by_film_count
 )
+from .questions4 import (
+    get_most_frequent_actor_director_pairs,
+    get_tv_series_with_highest_avg_episode_ratings,
+    get_actors_with_most_genre_diversity,
+    get_top_rated_movies_by_new_directors,
+    get_genre_trends_over_time,
+    get_most_versatile_directors
+)
+
+
 from . import CACHE_PATH
 
 questions_implementation = {
@@ -32,7 +42,14 @@ questions_implementation = {
     "drama_directors":get_drama_directors,
     "breaking_bad_episodes":get_breaking_bad_episodes,
     "actors_with_most_series":get_actors_with_most_series,
-    "top10_genres_by_film_count":get_top10_genres_by_film_count
+    "top10_genres_by_film_count":get_top10_genres_by_film_count,
+    
+    "most_frequent_actor_director_pairs": get_most_frequent_actor_director_pairs,
+    "tv_series_with_highest_avg_episode_ratings": get_tv_series_with_highest_avg_episode_ratings,
+    "actors_with_most_genre_diversity": get_actors_with_most_genre_diversity,
+    "top_rated_movies_by_new_directors": get_top_rated_movies_by_new_directors,
+    "genre_trends_over_time": get_genre_trends_over_time,
+    "most_versatile_directors": get_most_versatile_directors
 }
 
 def run(df_s: Dict[str, DataFrame]):
