@@ -19,6 +19,7 @@ def get_comedies_after_2010(df_s: Dict[str, DataFrame]):
 
 def get_top10_rated(df_s: Dict[str, DataFrame]):
     df_ratings = df_s["title.ratings"]
+    df_basics = df_s["title.basics"]
     top_rated = df_ratings.alias("r") \
         .join(df_basics.alias("b"), col("r.tconst") == col("b.tconst")) \
         .filter((col("r.numVotes") > 100000) & (col("b.titleType") == "movie")) \
@@ -58,10 +59,18 @@ def get_drama_directors(df_s: Dict[str, DataFrame]):
 def get_breaking_bad_episodes(df_s: Dict[str, DataFrame]):
     df_basics = df_s["title.basics"]
     df_episodes = df_s["title.episode"]
-    breaking_bad = df_basics.filter(col("primaryTitle") == "Breaking Bad") \
-                            .select("tconst").first()["tconst"]
 
-    episodes = df_episodes.filter(col("parentTconst") == breaking_bad) \
+    breaking_bad_df = df_basics.filter(
+        (col("primaryTitle") == "Breaking Bad") &
+        (col("titleType") == "tvSeries")
+    )
+
+    breaking_bad_row = breaking_bad_df.select("tconst").first()
+    if not breaking_bad_row:
+        return None
+    breaking_bad_tconst = breaking_bad_row["tconst"]
+
+    episodes = df_episodes.filter(col("parentTconst") == breaking_bad_tconst) \
         .join(df_basics.select("tconst", "primaryTitle"), "tconst") \
         .select(
             col("seasonNumber").cast("int").alias("season"),
@@ -70,7 +79,7 @@ def get_breaking_bad_episodes(df_s: Dict[str, DataFrame]):
         ) \
         .orderBy("season", "episode")
 
-    episodes.show()
+    episodes.show(truncate=False)
     return episodes
 
 def get_actors_with_most_series(df_s: Dict[str, DataFrame]):

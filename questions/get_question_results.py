@@ -26,6 +26,15 @@ from .questions3 import (
     compare_originals_and_sequels,
     get_top_franchises_by_rating_count
 )
+from .questions4 import (
+    get_most_frequent_actor_director_pairs,
+    get_tv_series_with_highest_avg_episode_ratings,
+    get_actors_with_most_genre_diversity,
+    get_top_rated_movies_by_new_directors,
+    get_genre_trends_over_time,
+    get_most_versatile_directors
+)
+
 from . import CACHE_PATH
 
 questions_implementation = {
@@ -47,6 +56,12 @@ questions_implementation = {
     "get_top_animation_directors": get_top_animation_directors,
     "compare_originals_and_sequels": compare_originals_and_sequels,
     "get_top_franchises_by_rating_count": get_top_franchises_by_rating_count,
+    "most_frequent_actor_director_pairs": get_most_frequent_actor_director_pairs,
+    "tv_series_with_highest_avg_episode_ratings": get_tv_series_with_highest_avg_episode_ratings,
+    "actors_with_most_genre_diversity": get_actors_with_most_genre_diversity,
+    "top_rated_movies_by_new_directors": get_top_rated_movies_by_new_directors,
+    "genre_trends_over_time": get_genre_trends_over_time,
+    "most_versatile_directors": get_most_versatile_directors
 }
 
 def run(df_s: Dict[str, DataFrame]):
