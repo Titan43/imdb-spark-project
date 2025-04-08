@@ -18,6 +18,14 @@ from .questions2 import (
     get_actors_with_most_series,
     get_top10_genres_by_film_count
 )
+from .questions3 import (
+    get_animation_count_by_decade,
+    get_longest_active_people,
+    get_top_animated_title_by_year,
+    get_top_animation_directors,
+    compare_originals_and_sequels,
+    get_top_franchises_by_rating_count
+)
 from . import CACHE_PATH
 
 questions_implementation = {
@@ -32,7 +40,13 @@ questions_implementation = {
     "drama_directors":get_drama_directors,
     "breaking_bad_episodes":get_breaking_bad_episodes,
     "actors_with_most_series":get_actors_with_most_series,
-    "top10_genres_by_film_count":get_top10_genres_by_film_count
+    "top10_genres_by_film_count":get_top10_genres_by_film_count,
+    "get_animation_count_by_decade": get_animation_count_by_decade,
+    "get_longest_active_people": get_longest_active_people,
+    "get_top_animated_title_by_year": get_top_animated_title_by_year,
+    "get_top_animation_directors": get_top_animation_directors,
+    "compare_originals_and_sequels": compare_originals_and_sequels,
+    "get_top_franchises_by_rating_count": get_top_franchises_by_rating_count,
 }
 
 def run(df_s: Dict[str, DataFrame]):
