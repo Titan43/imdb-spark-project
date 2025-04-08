@@ -18,6 +18,14 @@ from .questions2 import (
     get_actors_with_most_series,
     get_top10_genres_by_film_count
 )
+from .questions3 import (
+    get_animation_count_by_decade,
+    get_longest_active_people,
+    get_top_animated_title_by_year,
+    get_top_animation_directors,
+    compare_originals_and_sequels,
+    get_top_franchises_by_rating_count
+)
 from .questions4 import (
     get_most_frequent_actor_director_pairs,
     get_tv_series_with_highest_avg_episode_ratings,
@@ -26,7 +34,6 @@ from .questions4 import (
     get_genre_trends_over_time,
     get_most_versatile_directors
 )
-
 
 from . import CACHE_PATH
 
@@ -43,7 +50,12 @@ questions_implementation = {
     "breaking_bad_episodes":get_breaking_bad_episodes,
     "actors_with_most_series":get_actors_with_most_series,
     "top10_genres_by_film_count":get_top10_genres_by_film_count,
-    
+    "get_animation_count_by_decade": get_animation_count_by_decade,
+    "get_longest_active_people": get_longest_active_people,
+    "get_top_animated_title_by_year": get_top_animated_title_by_year,
+    "get_top_animation_directors": get_top_animation_directors,
+    "compare_originals_and_sequels": compare_originals_and_sequels,
+    "get_top_franchises_by_rating_count": get_top_franchises_by_rating_count,
     "most_frequent_actor_director_pairs": get_most_frequent_actor_director_pairs,
     "tv_series_with_highest_avg_episode_ratings": get_tv_series_with_highest_avg_episode_ratings,
     "actors_with_most_genre_diversity": get_actors_with_most_genre_diversity,
